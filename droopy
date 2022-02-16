@@ -78,7 +78,7 @@ else:
 import cgi
 import os
 import posixpath
-import macpath
+import os.path
 import ntpath
 import argparse
 import mimetypes
@@ -109,7 +109,7 @@ def fullpath(path):
 
 def basename(path):
     "Extract the file base name (some browsers send the full file path)."
-    for mod in posixpath, macpath, ntpath:
+    for mod in posixpath, ntpath:
         path = mod.basename(path)
     return path
 
@@ -155,7 +155,7 @@ class DroopyFieldStorage(cgi.FieldStorage):
     def __init__(self, fp=None, headers=None, outerboundary=b'',
                  environ=os.environ, keep_blank_values=0, strict_parsing=0,
                  limit=None, encoding='utf-8', errors='replace',
-                 directory='.'):
+                 directory='.',max_num_fields=None, separator='&'):
         """
         Adds 'directory' argument to FieldStorage.__init__.
         Retains compatibility with FieldStorage.__init__ (which involves magic)
@@ -167,7 +167,7 @@ class DroopyFieldStorage(cgi.FieldStorage):
         if sys.version_info > (3,):
             cgi.FieldStorage.__init__(self, fp, headers, outerboundary,
                                       environ, keep_blank_values,
-                                      strict_parsing, limit, encoding, errors)
+                                      strict_parsing, limit, encoding, errors, max_num_fields, separator)
         else:
             cgi.FieldStorage.__init__(self, fp, headers, outerboundary,
                                       environ, keep_blank_values,
